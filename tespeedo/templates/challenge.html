@@ -1,0 +1,54 @@
+{{ $param := .Parameters }}
+{{ $chal  := .Challenge }}
+<div id="challengeView" style="margin-left:10px;">
+	StageId
+	<label>
+	</label>
+	<label>
+		Valid Days 
+	</label>	
+	<label>
+		{{.Challenge.ValidDays}}			 
+	</label>
+	{{if .AlreadyParticipated}}
+	<div>
+		<label>
+			You are already participating in this challenge
+		</label>
+	</div>
+	{{else}}
+	<form action="/participate" method="POST">
+		<input type="hidden" value={{.Challenge.UCID}} name={{.Parameters.UCID}} />
+		<input type="hidden" value={{.Source}} name="source" />
+		<input type="text" name={{.Parameters.CASH}} />
+		<input type="submit" value="Join the Challenge"/>
+	</form>
+	{{end}}
+	<table> 
+		<tr>
+			<td> Top Score </td>
+			<td><i> {{$chal.Score}} ms </i></td>
+		</tr>
+	</table>
+	<div>
+		<h3> Users Already Participated </h3> <br />
+		<table>
+			<tr>
+			{{range .Header}}
+				<td>{{.}}</td>
+			{{end}}
+			</tr>
+			{{range .PViewSlice}}
+			<tr>
+				<td><a href="dashBoard?&{{$param.PUID}}={{.PID}}">{{.Name}}</a></td>
+				<td>{{.CashInBet}}</td>
+				<td>{{.Attempts}}</td>
+				<td>{{.MaxAttempts}}</td>
+				<td>{{.TimeRem}}days</td>
+				<td>{{$chal.StageId}}</td>
+				<td><a href="game?&{{$param.STAGEID}}={{$chal.StageId}}&{{$param.UCID}}={{$chal.UCID}}">Play</a>
+			</tr>
+			{{end}}
+		</table>
+	</div>
+</div>

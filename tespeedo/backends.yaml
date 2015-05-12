@@ -1,0 +1,5 @@
+backends:
+- name      : stat
+  class     : b1
+  instances : 2
+  options   : dynamic

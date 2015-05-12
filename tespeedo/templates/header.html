@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>TespeeDo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Its an online gaming site where you can challenge your friends.">
+    <meta name="author" content="George Thomas, Vivin George">
+    <link rel="icon" 
+          type="image/png" 
+	        href="../images/Logo16.png">
+    <!-- Le styles -->
+    <link href="../css/bootstrap.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="../css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
+	<link href="../css/style.css?1" rel="stylesheet" type="text/css">
+
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-25884206-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+	<script>
+	var preloader = '<div style="width:100%;height:100%;"> <img style="position:absolute; left:300px; top:300px;" src="images/preload.gif"> </img> </div>'
+	var Exit = 1
+	</script>
+
+  </head>
+
+
+  <body>
+			<script>
+				window.fbAsyncInit = function() {
+					FB.init ({
+						appId      : '237534292966021',
+						cookie     : true,
+						xfbml      : true,
+						version    : 'v2.0',
+						status     : true
+					});
+				};
+
+				(function(d, s, id){
+				 var js, fjs = d.getElementsByTagName(s)[0];
+				 if (d.getElementById(id)) {return;}
+				 js = d.createElement(s); js.id = id;
+				 js.src = "//connect.facebook.net/en_US/sdk.js";
+				 fjs.parentNode.insertBefore(js, fjs);
+				 }(document, 'script', 'facebook-jssdk'));
+			</script>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">TespeeDo</a>
+          <div class="btn-group pull-right">
+            
+				{{if .Stage}}
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i>&nbsp; {{ .Name}} &nbsp;
+				{{else}}
+					<a class="btn dropdown-toggle" onclick="logInWithFb();" ><i class="icon-user"></i>&nbsp;Login&nbsp;
+				{{end}}
+						<span class="caret"></span>
+					</a>
+            
+            <ul class="dropdown-menu">
+              <li><a href="/stats">Standings</a></li>
+              <li><a href="/help">Help</a></li>
+              <li class="divider"></li>
+            </ul>
+          </div>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="/">Home</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/contact">Contact</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+		    <div class="row-fluid">
+				<div class="span3">
+					<a href="/" class="header-logo left"><img src="images/logoSite.jpg" /></a>
+				</div>
+				<div class="span4"></div>
+				<div class="span5">
+					<ul class="nav-box">				
+						{{if .Stage}}
+						<script>
+							function sendRequest () {
+
+								FB.ui({
+									method  : 'apprequests',
+									message : 'Try out tespeedo, it is a cool and exciting typing game',
+								}, requestCallBack);
+							}
+
+							function requestCallBack (response) {
+								if (response) { 
+									$("#invi-resp").modal({
+										keyboard : false
+									});
+								}
+							}
+						</script>
+							<li class="nav main-link"><a href="/game">Arena</a></li>
+							<li class="nav main-link"><a onclick="sendRequest()">FbInvite</a></li>
+							<li class="nav main-link"><a href="/stats">Standings</a></li>
+						{{else}}
+							<li class="nav main-link"><a href="/">Intro</a></li>
+						{{end}}
+					</ul>
+				</div>
+			</div>
+		    <div class="row-fluid">
+				<div class="span2"></div>
+				<div class="span8 innerContainer">
+
+					<div class="modal hide" id="invi-resp">
+						<div class="modal-header">
+							<button class="close" data-dismiss="modal">x</button>
+						</div>
+						<div class="modal-body">
+							<p>
+							<label>Invitation Sent Successfully</label> 
+							</p>
+						</div>
+						<div class="modal-footer">
+						</div>
+					</div>

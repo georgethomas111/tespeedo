@@ -1,0 +1,57 @@
+{{$paramName := .ParamName }}
+<div id="dashboard">
+<div class="left">
+	<div style="margin:10px">
+	<div>
+		<h2>Account</h2>
+		<table> 
+                        <tr>
+				<td> Name</td>
+				<td>{{.User.Name| html}} </td>
+			</tr>
+                        <tr>
+				<td> UserName</td>
+				<td>{{.User.UserName| html}} </td>
+			</tr>
+			{{if .MYACC}}
+                        <tr>
+				<td> Email</td>
+				<td>{{.User.Email| html}} </td>
+			</tr>
+			{{end}}
+                        <tr>
+				<td> Stage</td>
+				<td>{{.User.Stage| html}} </td>
+			</tr>
+			<tr>
+				<td> Cash </td>
+				<td>{{.User.Cash| html}} </td>
+			</tr>
+                        <tr>
+				<td> Points</td>
+				<td>{{.User.Points| html}} </td>
+			</tr>
+		</table>
+	</div>
+        {{if .BestScores}}
+	<div>
+		<h3> BestScores </h3>
+		<table>
+			<tr>
+				<td>Stage</td>
+				<td>NoOfAttempts</td>
+				<td>BestScore</td>
+			</tr>
+			{{range .BestScores}}
+			<tr>
+				<td>{{.Stage}}</td>
+				<td>{{.NoOfAttempts}}</td>
+				<td>{{.Score}} ms</td>
+			</tr>
+			{{end}}
+		</table>
+	</div>
+        {{end}}
+	</div>
+</div>
+</div>

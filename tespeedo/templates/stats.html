@@ -1,0 +1,136 @@
+{{ $param := .ParamName }}
+<script src="js/fbFriend.js"></script>
+{{if .Selection}}
+<script>
+	function mockSubmit () { 
+		getFriendsFbIds ();
+	}
+</script>
+    <form method="post" action="/stats" id="sucForm">
+         <input name={{$param.FBFRIENDS}} type="hidden" value=""/> 
+         <select name={{$param.STAGEID}} multiple="multiple">
+         {{range .StageData}}
+             <option value="{{.Id}}">
+                 {{.Value}}
+             </option>
+         {{end}}
+         <select>
+     </form> 
+     <button class="btn btn-warning" onclick="mockSubmit ();"> Get Standings </button>
+{{else}}
+<script>
+var cUrl="https://apps.facebook.com/tespeedo"
+function postInFb () {
+	FB.ui({
+          method: 'feed',
+          name: 'tESPEEDo',
+          link: cUrl,
+          caption: "tESPEEDo RankList",
+	  description : "My rank is {{.MyRank}} among friends. Try beating that.",
+          });
+}
+
+function sendInFb () {
+	FB.ui({
+          method: 'send',
+          name: 'Accept My Challenge',
+          link: cUrl,
+          caption: "Lets See Who Is faster",
+	  description : "Check My Scores !!",
+          });
+
+}
+  
+function sendReqToRec (fbId) {
+
+	FB.ui({
+		method  : 'apprequests',
+		to      : fbId,
+		message : 'Check out my scores.',
+	}, requestCallBack);
+}
+
+</script>
+<div style="float:right">
+	<a class="btn btn-info btn-small" href="/game?&{{$param.STAGEID}}={{.StageId}}"> 
+		Play Stage
+	</a>
+</div>
+
+<div id="statistics">
+<h2> My Profile </h2><br/>
+<table width="60%">
+   <tr>
+        <td width="30%"> Name </td>  
+        <td width="70%"><strong>:&nbsp {{.Name}}</strong> </td>
+   </tr>
+   <tr>
+        <td> Stage </td>  
+        <td><strong>:&nbsp  {{.StagePrev}}</strong> </td>
+   </tr>
+   {{if .ShowSpeed}}
+   <tr>
+        <td> Time </td>  
+        <td><strong>:&nbsp  {{.Time}} </strong>sec</td>
+   </tr>
+   <tr>
+        <td> Speed </td>  
+        <td><strong>:&nbsp  {{.Speed}} </strong>sec/letter</td>
+   </tr>
+   <tr>
+        <td> Status </td>  
+        <td><strong>:&nbsp  {{.Status}} </strong></td>
+   </tr>
+  {{end}}
+   <tr>
+        <td> TargetTime </td>  
+        <td><strong>:&nbsp {{.TargetScore}} </strong>  </td>
+   </tr>
+</table><br/><br/>
+
+<h2> RankList </h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+      <tr style="background-color:#333;color:#fff;" height="40">
+        <th>User</th>
+        <th>Name</th>
+        <th>Score</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody>
+
+	  {{range .RankData}}
+      <tr>
+        <td>
+           <img src="{{.Pic_Square}}"></img>
+        </td>
+        <td>
+          <strong> {{.Name}} </strong>
+        </td>
+        <td>
+          {{.Score}}
+       </td>
+       <td>
+	       <div>
+		       <a onclick='sendReqToRec("{{.Uid}}")'> 
+			       <i class="icon-large icon-envelope"></i>
+		       </a>
+	       </div>
+       </td>
+
+      </tr>
+	{{end}}
+    </tbody>
+  </table>
+</div>
+<div>
+     <span class="facebook-signin-button" onclick="Facebook.login(); return false;">
+       <a onclick="sendRequest ()">Invite</a>
+     </span>
+     <span class="facebook-signin-button" onclick="Facebook.login(); return false;">
+       <a onclick="postInFb ()">Share In Facebook</a>
+     </span>
+</div>
+{{end}}

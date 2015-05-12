@@ -1,0 +1,224 @@
+{{$paramName := .ParamName }}
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<script>
+$(document).ready(function(){
+	$("#post-form").validate({
+	rules: {
+	{{.ParamName.ATTEMPTS}} : {
+		required : true,		
+		range    : [1, 10],
+		number   : true
+		},
+	{{.ParamName.MINCASH}} : {
+		number    : true
+		},
+	{{.ParamName.CASH}} : {
+		number   : true
+		}
+	}
+	});
+});
+
+</script>
+<script>
+window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '237534292966021', 
+      channelUrl : 'http://www.tespeedo.com/channel', 
+      status     : true, 
+      cookie     : true, 
+      xfbml      : true  
+    });
+  };
+  (function(d){
+     var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     d.getElementsByTagName('head')[0].appendChild(js);
+   }(document));
+
+
+function postInFb (cUrl) {
+	console.log ("Post In Fb Called")
+	FB.ui({
+          method: 'feed',
+          name: 'Accept My Challenge',
+          link: cUrl,
+          caption: "Lets See Who Is faster",
+	  description : "Click on the link to play against me",
+          });
+}
+
+function sendInFb (cUrl) {
+	FB.ui({
+          method: 'send',
+          name: 'Accept My Challenge',
+          link: cUrl,
+          caption: "Lets See Who Is faster",
+	  description : "Click on the like to play against me",
+          });
+
+}
+</script>
+
+ <script>
+  $(document).ready(function() {
+    $("input#autocomplete").autocomplete({
+    source: [
+       			  {{range .Stages}}
+                          "{{.Id}},{{.Value}}",
+			  {{end}}
+		]
+});
+  });
+  </script>
+
+
+<div id="fb-root"></div>
+
+<div class="help-block">
+	<script>
+        var content = "<p> Post a challenge so that you can challenge your friends with it.</p>" +
+		"<p> Upon Posting a challenge you get a unique url for your challenge.</p>" +
+		"<p> Pass the url to your friends and enjoy the game. </p>"  
+	</script>
+	<a onclick="load_overlay(content,1)"> What's A Challenge</a>
+</div>
+
+<div id="multiPlayer" style="margin:10px;">
+{{ if .Stages }} 
+<h3>Post Challenge</h3>
+<form action="/postChallenge" id="post-form" method="POST">	
+	<table>
+	<tr>
+		<td>
+			<label>
+				ValidDays 
+			</label>
+		</td>
+		<td>
+			<input type="text" name="{{.ParamName.VALIDDAYS |html}}" />
+		</td>
+		<td>
+			<script>
+				var valid_content = "<p> Represents the No Of Days Challenge is going to be valid for. </p>";
+			</script>
+			<a onclick="load_overlay(valid_content, 1)"> ? </a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>
+				Attempts
+			</label>
+		</td>
+		<td>
+			<input type="text" name="{{.ParamName.ATTEMPTS |html}}"/>
+		</td>
+		<td>
+			<script>
+				var help_attempts = "<p> Maximum No Of Attempts For The Challenge. </p>";
+			</script>
+			<a onclick="load_overlay(help_attempts, 1)"> ? </a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>
+				MinCash
+			</label>
+		</td>
+		<td>
+			<input type="text" name="{{.ParamName.MINCASH |html}}"/>
+		</td>
+		<td>
+			<script>
+				var help_mincash = "<p> Min Cash A User Has To Put To Participate In The Challenge. </p>";
+			</script>
+			<a onclick="load_overlay(help_mincash, 1)"> ? </a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>
+				Cash
+			</label>
+		</td>
+		<td>
+			<input type="text" name="{{.ParamName.CASH |html}}"/>
+		</td>
+		<td>
+			<script>
+				var help_cash = "<p> The Cash You Are Going To Put In. </p>";
+			</script>
+			<a onclick="load_overlay(help_cash, 1)"> ? </a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>
+				Stage
+			</label>
+		</td>
+		<td>
+			<input id="autocomplete" name="{{.ParamName.STAGEID}}"/>
+		</td>
+		<td>
+			<script>
+				var help_stage = "<p> The Stage In Which You Want to Play </p>" +
+						"<p> Tip : Select The Stage You Know The Best !! </p>"
+			</script>
+			<a onclick="load_overlay(help_stage, 1)"> ? </a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+                	<input type="submit" value="PostChallenge"> </input> 
+		</td>
+		<td>
+			<script>
+				var help_post = "<p> Post The Challenge To Get The Url </p>";
+			</script>
+			<a onclick="load_overlay(help_post, 1)"> ? </a>
+		</td>
+	</tr>
+	</table>
+</form>
+{{ end }}
+
+        {{if .Challenges }}
+	<div>
+		<h3> Participating Challenges </h3>
+		<table>
+			<tr>
+				<td> Stage </td>
+                                <td> Cash </td>
+				<td> Attempts </td>
+				<td> Max Attempts </td>
+                                <td> Link </td>
+				<td> Play </td>
+			</tr>
+			{{range .Challenges }}
+			<tr>
+				<td> {{.StageId}} </td>
+				<td> {{.Cash}}</td>
+				<td> {{.Attempts}} </td>
+				<td> {{.MaxAttempts}} </td>
+				<td> <a href='challengeView?&{{$paramName.UCID}}={{.UCID}}'">View</a> </td>
+				<td> <a href='game?&{{$paramName.STAGEID}}={{.StageId}}&{{$paramName.UCID}}={{.UCID}}'">View</a> </td>
+				{{if .FbUser}}
+					<script>
+					var post_fb = "<p><a onclick=postInFb('http://tespeedo.com/challengeView?&{{$paramName.UCID}}={{.UCID}}&source=fb')>Share In Facebook</a></p>" +
+"<p><a onclick=sendInFb('http://tespeedo.com/challengeView?&{{$paramName.UCID}}={{.UCID}}&source=fb')>Message Friends In Facebook</a></p>"
+					</script>
+					<td><a onclick="load_overlay (post_fb, 1)">Share In Fb</a></td>
+                                {{end}}
+			</tr>	
+			{{end}}
+		</table>
+	</div>
+	{{end}}        
+</div>

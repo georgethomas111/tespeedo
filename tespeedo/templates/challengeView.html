@@ -1,0 +1,79 @@
+<script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
+
+<script>
+$(document).ready(function(){
+	$("#post-form").validate({
+	rules: {
+	{{.ParamName.ATTEMPTS}} : {
+		required : true,		
+		range    : [1, 10],
+		number   : true
+		},
+	{{.ParamName.MINCASH}} : {
+		number    : true
+		},
+	{{.ParamName.CASH}} : {
+		number   : true
+		}
+	}
+	});
+});
+</script>
+
+<div class="left"> 
+<form action="/postChallenge" id="post-form" method="POST">	
+		<label>
+		
+		</label>
+		<input type="hidden" name="{{.ParamName.STAGEID}}"  value="{{.StageId}}"/>
+		<input type="hidden" name="source"  value="{{.Source}}"/>
+	<table>
+	<tr>
+		<td>
+			<label>
+				ValidDays 
+			</label>
+		</td>
+		<td>
+			<input type="text" name="{{.ParamName.VALIDDAYS |html}}" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>
+				Attempts
+			</label>
+		</td>
+		<td>
+			<input type="text" name="{{.ParamName.ATTEMPTS |html}}"/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>
+				MinCash
+			</label>
+		</td>
+		<td>
+			<input type="text" name="{{.ParamName.MINCASH |html}}"/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>
+				Cash
+			</label>
+		</td>
+		<td>
+			<input type="text" name="{{.ParamName.CASH |html}}"/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="submit" value="SignUp">
+		</td>
+	</tr>
+	</table>
+</form>
+
+</div>

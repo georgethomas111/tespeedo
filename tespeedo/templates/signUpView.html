@@ -1,0 +1,80 @@
+<script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
+ 
+<script>
+$(document).ready(function(){
+	$("#reg-form").validate({
+		rules: {
+	    		{{.PASSWORD}}: "required",
+	    		cpwd: {
+	    	    	 	equalTo: "#{{.PASSWORD}}"
+	    		}
+	  	}
+	});
+});
+</script>
+
+
+<div class="left"> 
+<form id="reg-form" action="/signUpServlet" method="POST">
+	<table> 
+		<tr>    
+			<td>
+				<label>
+					UserName
+				</label>
+			</td>
+			<td>
+				<input type="text" name="{{.USERNAME |html}}" class="required" minlength="6" />
+			</td>	
+		</tr>
+		<tr>    
+			<td>
+				<label>
+					Name 
+				</label>
+			</td>
+			<td>
+				<input type="text" name="{{.NAME |html}}" class="required"/>
+			</td>	
+		</tr>
+		<tr>    
+			<td>
+				<label>
+					Email 
+				</label>
+			</td>
+			<td>
+				<input type="text" name="{{.EMAIL |html}}" class="required email"/>
+			</td>	
+		</tr>
+		<tr>    
+			<td>
+
+			<label>
+				Password 
+			</label>
+			</td>
+			<td>
+				<input type="password" name="{{.PASSWORD |html}}" id="{{.PASSWORD |html}}" />
+			</td>	
+		</tr>
+		<tr>    
+			<td>
+
+				<label>
+					Confirm Password 
+				</label>
+			</td>
+			<td>
+				<input type="password" name="cpwd" />
+			</td>	
+		</tr>
+		<tr>    
+			<td>
+				<input type="submit" value="SignUp">
+			</td>
+		</tr>
+	</table>
+</form>
+</div>
+

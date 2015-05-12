@@ -1,0 +1,38 @@
+application: tespeedo
+version: 2
+runtime: go
+api_version: go1
+default_expiration: "7d"
+
+handlers:
+
+- url: /css
+  static_dir: css
+
+- url: /images
+  static_dir: images
+
+- url: /js
+  static_dir: js
+
+- url: /favicon.ico
+  static_files: favicon.ico
+  upload: favicon.ico
+
+- url: /robots.txt
+  static_files: robots.txt
+  upload: robots.txt
+
+- url: /app.yaml
+  script: _go_app
+  login: admin
+
+- url: /.*
+  script: _go_app
+  secure: always
+
+builtins:
+- remote_api: on
+
+
+

@@ -1,0 +1,114 @@
+
+<div style="float:right;" >
+	<script>
+		function mockSubmit () { 
+	 	getFriendsFbIds ();
+	}
+	</script>
+    <form method="post" action="/stats" id="sucForm">
+         <input name={{.ParamName.TIME}} type="hidden" value=""></input> 
+       	 <input name="{{.ParamName.FBFRIENDS}}" type="hidden" value=""/> 
+ 	 <input name="{{.ParamName.STAGEID}}" type="hidden" value="{{.Stage.Id}}">
+    </form> 
+    <button class="btn btn-info btn-small" onclick="mockSubmit ();"> 
+	Current Position
+    </button>
+</div>
+
+<div id="game" style="margin:10px;">
+<script src="js/fbFriend.js"></script>
+<script>
+function gameSuccess () {
+                        displayed = 1; // To stop timer
+                        $("input[name={{.ParamName.TIME}}]").attr ("value", time);
+                        getFriendsFbIds ();
+}
+
+function appendContent (name, value) {
+	result = "<br /><label>" + name + "</label>" + value + "</label>";
+	$("div[name='result']").append(result);	
+}
+
+function ReadyAlert () {
+	$('#counter').html(counterTime)
+	Mark();
+}
+
+function Mark() {
+	if (counterTime == 0 ) {
+		$("#myModal").modal('hide');
+		counterTime = 6;
+                ques = "{{.Stage.Value}}"
+		initialize(ques, gameSuccess);	
+		// Make the textbox empty
+		$('textarea[name="speedInput"]').val("");
+		$('textarea[name="speedInput"]').focus();
+
+    		$.ajax({
+      			url: "/start",
+      			context: document.body
+   	 		}).done(function() { 
+        		console.log ("Start Called");
+    		});
+		if(clicked == 0) {
+			clicked = 1;
+			startCounting();
+			}
+	} else {
+		setTimeout("ReadyAlert(counterTime)", 1000)
+		counterTime=counterTime-1;
+	}
+}		
+
+function StartGame () {
+
+    $("#myModal").modal({
+        keyboard : false
+    });
+    removeCopy ();
+    Mark();
+}
+
+
+function ReadyAlert () {
+	$('#counter').html(counterTime)
+	Mark();
+}
+
+</script>
+<div>
+	<div class="modal hide fade" id="myModal">
+		<div class="modal-header">
+			<h3>Gear Up</h3>
+		</div>
+		<div class="modal-body">
+			<p>
+			<label>Stage Starts In :</label> 
+			<div id="counter" style="padding:20px">
+			</div>
+			<img src="images/preload.gif"> </img>
+			</p>
+		</div>
+		<div class="modal-footer">
+		</div>
+	</div>
+	<div style="margin-left : 25px;font-family:monospace;">
+		 <h3>Stage {{.CurrentStage}} </h3>
+	 </div>
+	<div style="margin-left:25px;margin-top:25px;font-family:monospace;">
+		<h4>Challenge : </h4>
+		<label name="question">{{.Stage.Value}}</label><br/>
+		<h6>Target time :  {{.Stage.AvgScore}}s</h6><br/>
+		Enter your text here
+		<textarea id="textarea" class="input-xlarge" rows="3" name="speedInput"></textarea><br/>
+		<a class="btn btn-warning" onclick="StartGame();" data-toggle="modal" >Start Game</a>
+		<button class="btn btn-warning" onclick="window.location='/game?&{{.ParamName.STAGEID}}={{.PrevStage}}';" >Prev Stage</button>
+		<button class="btn btn-warning" onclick="window.location='/game?&{{.ParamName.STAGEID}}={{.NextStage}}';" >Next Stage</button><br/><br/>
+		<h6>Timer :  <label type="text" name="clock" style="display :inline;color:red;"></label></h6><br />
+                <label style="display :inline; color:grey;"><i>* There can be slight variations in actual time and the displayed time </i></label>
+	</div>
+			
+</div>
+<div class="cen-image" name="result">
+</div>
+</div>

@@ -1,0 +1,22 @@
+<div>
+	Stage
+	<label>
+		{{.BestScore.Stage| html}}
+	</label>
+
+	Score
+	<label>
+		{{.BestScore.Score| html}}
+	</label>
+
+	NoOfAttempts
+	<label>
+		{{.BestScore.NoOfAttempts| html}}
+	</label>
+
+	{{if .BestScore.ChallengeId }}
+		<a href="challengeView?&{{.ParamName.UCID}}={{.BestScore.ChallengeId}}">View Challenge</a>
+	{{else}}
+		<a href="postChallengeView?&{{.ParamName.STAGEID}}={{.BestScore.Stage}}">Post Challenge</a>
+	{{end}}
+</div>

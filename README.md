@@ -1,24 +1,10 @@
-# tespeedo
 Tespeedo
 ========
 
-Tespeedo is a framework for easily creating websites in go. Its an extension of the code of my website built 2 years back.
+Tespeedo is the source code of a website which I created 2 years back using go language's app engine frontend. Go has changed but I encourage anyone looking to start a website to have a look at it to get an idea of the design of a website. 
 
+The things taken care are
 
-It simplies creation of the website.
-
-* to not having the overhead of creating db backends. 
-* Deal with your website as objects and get out of configuration files. 
-
-Steps to do to create 
-=====================
-
-* Create one Object for page. 
-
-Go Object for page with. 
-call Init(pageObject)
-Now Relax.
-
-Just run the project. 
-
+* inmemory caching of the templates for faster page load times of static websites.
+* pages.go which contains the handler functions for the in main.go. 
 

@@ -1,0 +1,54 @@
+
+<script>
+	function logInWithFb () {
+		console.log ("logging In with Fb Can start loader")
+		$(".main-content").html (preloader)
+		FB.getLoginStatus(function(response) {
+			if (response.status == "connected") {
+				console.log (response)
+				var fbId = response.authResponse.userID;
+				var accessToken = response.authResponse.accessToken;
+				FB.api('/me', function(response) {
+					console.log ("Can end preloader")
+					$(".main-content").html (preloader)
+					var url = "logInWithFb?&fbid=" + fbId + "&name=" + response.name + "&email=" + response.email
+					window.location.replace(url)
+				});
+				// Now the redirection is to be done
+				} else {
+				// Log User In :
+				FB.login (function (response) {
+					logInWithFb(); 
+				},{scope: 'email'});
+			}
+		}); 
+	}
+</script>
+
+<script type="text/javascript">
+//	if(window.addEventListener){
+//		window.addEventListener('load',logInWithFb,false); //W3C
+//	}
+//else{
+//	window.attachEvent('onload',logInWithFb); //IE
+//}
+</script>
+
+<div id="intro">
+	<h3>It's a game anyone can try.</h3>
+
+	How it works is as simple as this :
+
+	<br><br><label><b><u>Steps</u></b></label><br>
+	<ol> 
+		<li>A challenge will be given to you.</li>
+		<li>Type down the challenge in the textbox accurately.</li>
+		<li>Faster the time faster is the route to the next level.</li>
+		<li>Play with friends and decide who is the best among yourselves.</li>
+	</ol>
+</div>
+<div>
+	<span class="facebook-signin-button">
+		<a onclick="logInWithFb()">Sign In with Facebook</a>
+	</span>
+</div>

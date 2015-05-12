@@ -1,0 +1,86 @@
+<div id="trial">
+
+<script>
+function trialSuccess () {
+  	// $("div[name='result']").html(preloader);	
+	var result = "<i>Good Score Log In  And Challenge Friends !!</i> <br />";
+	$("div[name='result']").html(result);	
+	displayed = 1;		
+}
+
+function appendContent (name, value) {
+	result = "<br /><label>" + name + "</label>" + value + "</label>";
+	$("div[name='result']").append(result);	
+}
+
+
+
+function ReadyAlert () {
+	$('#counter').html(counterTime)
+	Mark();
+}
+
+function Mark() {
+	if (counterTime == 0 ) {
+		$("#myModal").modal('hide');
+		counterTime = 6;
+                ques = "I am new to tespeedo and I would love to challenge my friends with this"
+		initialize(ques, trialSuccess);	
+		// Make the textbox empty
+		$('textarea[name="speedInput"]').val("");
+		$('textarea[name="speedInput"]').focus();
+
+		if(clicked == 0) {
+			clicked = 1;
+			startCounting();
+			}
+	} else {
+		setTimeout("ReadyAlert(counterTime)", 1000)
+		counterTime=counterTime-1;
+	}
+}		
+
+function StartGame () {
+    $("#myModal").modal({
+    keyboard : false
+    });
+    removeCopy ();
+    Mark();
+}
+</script>
+
+
+<div>
+<div class="modal hide fade" id="myModal">
+    <div class="modal-header">
+    <h3>Gear Up</h3>
+    </div>
+    <div class="modal-body">
+	<p>
+            <label>Stage Starts In :</label> 
+            <div id="counter" style="padding:20px">
+            </div>
+            <img src="images/preload.gif"> </img>
+        </p>
+    </div>
+    <div class="modal-footer">
+    </div>
+</div>
+	<div style="margin:50px;font-family:monospace;">
+		<h4>Challenge : </h4>
+		<label name="question">I am new to tespeedo and I would love to challenge my friends with this</label><br/>
+		<h6>Target time :  4000 ms</h6><br/>
+		Enter your text here
+		<textarea id="textarea" class="input-xlarge" rows="3" name="speedInput"></textarea><br/>
+		<!--<input type="text" class="input-xlarge" id="input01" name="speedInput" type="text"><br/>-->
+		<a id="start" class="btn btn-warning" data-toggle="modal" >Start Game</a><br/><br/>
+		<h6>Timer :  <label type="text" name="clock" style="display :inline;color:red;"></label></h6>
+
+	</div>
+			
+</div>
+<div class="cen-image" name="result">
+</div>
+<!-- End the trial div -->
+</div>
+<script src="js/trial.js" type="text/javascript"></script>

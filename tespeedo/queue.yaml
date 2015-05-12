@@ -1,0 +1,8 @@
+queue:
+- name   : statQueue
+  target : stat
+  rate   : 400/s
+  max_concurrent_requests: 64
+  bucket_size: 25
+  retry_parameters:
+          task_age_limit: 7d

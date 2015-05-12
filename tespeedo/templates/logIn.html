@@ -1,0 +1,34 @@
+<script>
+//permissions to ask for later {scope:'email,read_stream,user_games_activity'})
+function logInWithFb () {
+console.log ("logging In with Fb Can start loader")
+$(".main-content").html (preloader)
+FB.getLoginStatus(function(response) {
+    if (response.status == "connected") {
+         console.log (response)
+        var fbId = response.authResponse.userID;
+        var accessToken = response.authResponse.accessToken;
+        FB.api('/me', function(response) {
+	   console.log ("Can end preloader")
+	   $(".main-content").html (preloader)
+	   var url = "logInWithFb?&fbid=" + fbId + "&name=" + response.name + "&email=" + response.email
+           window.location.replace(url)
+        });
+    // Now the redirection is to be done
+    } else {
+        // Log User In :
+        FB.login (function (response) {
+            logInWithFb(); 
+        });
+    }
+}); 
+}
+</script>
+
+<div>
+     <span class="facebook-signin-button" onclick="Facebook.login(); return false;">
+       <a onclick="logInWithFb()">Sign In with Facebook</a>
+     </span>
+</div>
+
+</div>		

@@ -1,0 +1,129 @@
+<head>
+<script src="jquery-1.4.js"></script>
+<script>
+
+var id = 0;
+var question = "abcdefghijklmnopqrstuvwxyz";
+var time = 0;
+var displayed = 0; //False
+var clicked = 0; //False
+
+$(document).ready(function () {
+	$("input[name='speedInput']").bind('copy paste', function (e) {
+		e.preventDefault();
+     	 });
+	$("label[name='challenge']").text(question);
+//	loadQuestion(id);
+   });
+
+function showTime() {
+$("label[name=clock]").text(time + " seconds");
+}
+
+function validate() {
+// Place validation Functions here
+var compareString = $("input[name='speedInput']").val();
+if(question.toString() == compareString.toString()) {
+	if (displayed == 0) {	
+		alert("Successful - Time Taken = " + time);
+		displayed = 1;	
+	}
+}
+}
+
+function tick() {
+	time = time + 0.1;
+	showTime();
+	validate();
+	startCounting();
+}
+
+function startCounting() {
+if (displayed == 0) {
+	setTimeout(tick,100);
+}
+}
+
+// TDB
+function loadQuestion(id) {
+$.ajax({
+	url: "getNext?id="+id,
+	context: document.body,
+	success: function(question){
+	$("label[name='challenge']").text(question);
+	//reset everything so that it works without reload
+}
+});
+}
+
+$('a[name="nextChallenge"]').live('click',function () { 
+      	id++;
+	alert(id);
+	loadQuestion(id);
+});
+
+//Find functions which is takes click and tab
+$('input[name="speedInput"]').live('click',function() {
+// Make the textbox empty
+$('input[name="speedInput"]').val("");
+if(clicked == 0) {
+	clicked = 1;
+	startCounting();
+	}
+}
+);
+
+</script>
+<!-- Add the jquery header which sends a request to update.php and the response is updated as the score>
+ Get the data from the Table tasks based on a random value (Randomised by time) and sent an attribute.
+ Retrieve the attribute and the random value for validating getValidate.php
+, Separated arguments could be sent to indicate score and other stuff like the game level message etc.
+-->
+<link rel="icon" type="image/png" href="images/monkey_favicon.png"/>
+<link rel="stylessheet" href="css/style.css" type="text/css" media="screen"/>
+</head>
+<title>
+Speed Test
+</title>
+<body>
+<div style="float: right; padding-top: 40px;font-family: Helvetica;width:400px;"> 
+	Check Your Typing Speed And Accuracy Here. 
+	<br /><br /><label><b><u>Steps</u></b></label><br />
+	<ol> 
+		<li>A challenge will be given to you.</li>
+		<li>Type down the challenge in the textbox accurately.</li>
+		<li>If the result is correct you will find the time you took displayed.</li>
+	</ol>
+
+<div style="position=relative;padding-top:100px;">
+	<label>Clock : </label><label type="text" name="clock"></label>
+</div>
+</div>
+<div style="position=relative;padding-right:400px;padding-top:100px;float:right;">
+<div>
+	 <img src="images/monkey_icon.png" />
+</div>	
+<div style="position=relative;padding-top:50px;">
+	<label>Challenge - </label> 
+	<label type="text" name="challenge"> </label>
+<div>
+
+<div>
+	<br />
+	<label>Type here -  </label>
+	<input type="text" name="speedInput" id="clickdiv"/>
+</div>
+<div>
+        <br />
+        <label>In - </label><label name = "highScore"> </label>
+</div>
+
+<div>
+        <br />
+        <a name="nextChallenge">
+		<label>Next Challenge</label>
+	</a>
+</div>
+
+</div>
+</body>

@@ -1,0 +1,219 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-25884206-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="jquery-1.4.js"></script>
+<script>
+
+var maxCount = 4
+var minCount = 1
+var id = 1; //Initialized by user using server scripting based on the users level
+var question = "";
+var time = 0;
+var displayed = 0; //False
+var clicked = 0; //False
+
+$(document).ready(function () {
+	$("input[name='speedInput']").bind('copy paste', function (e) {
+		e.preventDefault();
+     	 });
+	loadQuestion(id);
+   });
+
+function showTime() {
+$("label[name=clock]").text(time + " seconds");
+}
+
+function stats(time, avgscore) {
+var retstring = "" ;
+if(time < avgscore)
+	retstring = "\n You Are Above Average :)";
+else
+	retstring = "\n Need to improve Still Below Average";
+
+alert (time + "   " + avgscore);
+return retstring;
+}
+
+function validate() {
+// Place validation Functions here
+var compareString = $("input[name='speedInput']").val();
+if(question.toString() == compareString.toString()) {	
+	if (displayed == 0) {	
+	$("#loading").css('display','block');
+		var result = "Successful \nTime Taken = " + time;
+		$.ajax({
+ 	        url: "stats?&id="+id+"&time="+time,
+       		context: document.body,
+        	success: function(avgscore){
+		$("#loading").css('display','none');	//removing preloader
+		result += stats(time, avgscore);
+		result+= "\n The average Score is " + avgscore;
+		
+		alert(result);
+		//reset everything so that it works without reload
+}
+});
+		displayed = 1;
+			
+	}
+}
+}
+
+function tick() {
+	time = time + 1;
+	showTime();
+	validate();
+	startCounting();
+}
+
+function startCounting() {
+if (displayed == 0) {
+	setTimeout(tick,1000);
+}
+}
+
+function initialize() {
+time = 0;
+displayed = 0; //False
+clicked = 0; //False
+}
+
+// TDB
+function loadQuestion(id) {
+$.ajax({
+	url: "getNext?&id="+id,
+	context: document.body,
+	success: function(next){
+	question=next;
+	appendval = "<label>Challenge-" + next + " </label>";
+	$("#loading").css('display','none');
+	$("div[name='challenge']").html(appendval);	
+	//reset everything so that it works without reload
+}
+});
+}
+
+$('a[name="playAgain"]').live('click',function () { 
+$("#loading").css('display','block');
+// clear the clock to 0s 
+	initialize();
+});
+
+$('a[name="nextChallenge"]').live('click',function () { 
+$("#loading").css('display','block'); 
+// clear the clock to 0s 
+        id++;
+        initialize();
+        loadQuestion(id);
+});
+
+$('a[name="prevChallenge"]').live('click',function () {
+$("#loading").css('display','block');
+// clear the clock to 0s
+        id--;
+        initialize();
+        loadQuestion(id);
+});
+
+//Find functions which is takes click and tab
+$('input[name="speedInput"]').live('click',function() {
+// Make the textbox empty
+$('input[name="speedInput"]').val("");
+if(clicked == 0) {
+	clicked = 1;
+	startCounting();
+	}
+}
+);
+
+</script>
+<!-- Add the jquery header which sends a request to update.php and the response is updated as the score>
+ Get the data from the Table tasks based on a random value (Randomised by time) and sent an attribute.
+ Retrieve the attribute and the random value for validating getValidate.php
+, Separated arguments could be sent to indicate score and other stuff like the game level message etc.
+-->
+<link rel="icon" type="image/png" href="images/monkey_favicon.png">
+<link rel="stylessheet" href="css/style.css" type="text/css" media="screen">
+<title>
+Speed Test
+</title></head>
+
+<body>
+
+<div style="float: right; padding-top: 40px;font-family: Helvetica;width:400px;"> 
+
+ <div id="fb-root"></div>
+      <script src="http://connect.facebook.net/en_US/all.js">
+      </script>
+      <script>
+         FB.init({ 
+            appId:'237534292966021', cookie:true, 
+            status:true, xfbml:true 
+         });
+      </script>
+      <fb:login-button perms="email,user_checkins">
+         Login with Facebook
+      </fb:login-button>
+
+<div style="position=relative;padding-top:10px">
+	Check Your Typing Speed And Accuracy Here. 
+	<br><br><label><b><u>Steps</u></b></label><br>
+	<ol> 
+		<li>A challenge will be given to you.</li>
+		<li>Type down the challenge in the textbox accurately.</li>
+		<li>If the result is correct you will find the time you took displayed.</li>
+	</ol>
+</div>
+
+<div style="position=relative;padding-top:100px;">
+	<label>Clock : </label><label type="text" name="clock"></label>
+</div>
+</div>
+<div style="position=relative;margin-left:40px;margin-top:100px;float:left;">
+<div>
+	 <img src="images/monkey_icon.png">
+</div>	
+<div name="challenge" style="position=relative;padding-top:50px;">
+
+</div>
+
+<div>
+	<br>
+	<label>Type here -  </label>
+	<input name="speedInput" type="text"> 
+</div>
+
+<a name="playAgain">
+	<label>
+		<i>Play Again </i>
+	</label>
+</a>
+
+<div>
+	<br>
+	<a name="prevChallenge">
+		<label>&lt;- Prev Challenge </label>
+	</a>
+        <a name="nextChallenge">
+		<label> Next Challenge -&gt; </label>
+	</a>
+</div>
+<div id=loading style=display:none;>
+	<label> Loading </label> <img src=images/preloading.gif></img>
+</div>
+
+</div>
+
+</div></div></body></html>
