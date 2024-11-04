@@ -7,7 +7,7 @@ hero:
   text: ""
   tagline: All things images
   image: 
-    src: ./img/logoSite.jpg
+    src: /img/logoSite.jpg
     alt: Tespeedo
   actions:
     - theme: brand
