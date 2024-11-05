@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import callAI from './js/callAI.js'
+
 export default {
   name: "ImageUpload",
   
@@ -38,6 +40,7 @@ export default {
 
         // Create an image preview
         this.imageUrl = URL.createObjectURL(file);
+	callAI.process(file)
       } else {
         this.errorMessage = "Please upload a valid image file.";
       }
@@ -54,9 +57,9 @@ export default {
 
 <style scoped>
 .image-upload {
-  max-width: 400px;
+  max-width: 60%;
   margin: 0 auto;
-  text-align: center;
+  text-align: left;
 }
 
 input[type="file"] {
