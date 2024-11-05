@@ -1,12 +1,10 @@
+# How do you use this app?
+
+So upload an image and you will be able to see a description of what that image is about eventually.
+
+
 <script setup> 
-import ButtonComponenet from './components/imageUpload.vue' 
+import ImageComponenet from './components/imageUpload.vue' 
 </script>
 
-
----
-# Images 
-
-This is where the vue image upload should go.
----
-
-<ButtonComponenet/>
+<ImageComponenet/>

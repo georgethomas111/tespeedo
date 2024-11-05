@@ -1,33 +1,76 @@
+<template>
+  <div class="image-upload">
+    <input type="file" @change="onFileChange" accept="image/*" />
+
+    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+
+    <div v-if="imageUrl" class="image-preview">
+      <img :src="imageUrl" alt="Image preview" />
+    </div>
+
+    <button v-if="imageUrl" @click="clearImage">Clear Image</button>
+  </div>
+</template>
+
 <script>
 export default {
-  // reactive state
+  name: "ImageUpload",
+  
   data() {
     return {
-      count: 0
-    }
+      imageUrl: null,      // URL of the uploaded image to display preview
+      errorMessage: null,  // Error message if there are issues with the file
+    };
   },
 
-  // functions that mutate state and trigger updates
   methods: {
-    increment() {
-      this.count++
+    // Handle file input change event
+    onFileChange(event) {
+      const file = event.target.files[0];
+      this.errorMessage = null;  // Clear any previous error messages
+
+      // Validate file type and size
+      if (file && file.type.startsWith("image/")) {
+        if (file.size > 2 * 1024 * 1024) {  // Limit size to 2MB
+          this.errorMessage = "Image size should be less than 2MB.";
+          return;
+        }
+
+        // Create an image preview
+        this.imageUrl = URL.createObjectURL(file);
+      } else {
+        this.errorMessage = "Please upload a valid image file.";
+      }
     },
 
-     decrement() {
-       this.count--
-
-     }
+    // Clear the uploaded image
+    clearImage() {
+      this.imageUrl = null;
+      this.$refs.fileInput.value = null;  // Reset the file input
+    },
   },
-
-  // lifecycle hooks
-  mounted() {
-    console.log(`The initial count is ${this.count}.`)
-  }
-}
+};
 </script>
 
-<template>
-  <button @click="increment">Increment </button>
-  <button @click="decrement">Decrement </button>
-{{ count }}
-</template>
+<style scoped>
+.image-upload {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+input[type="file"] {
+  margin: 10px 0;
+}
+
+.image-preview img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+.error {
+  color: red;
+}
+</style>
+
