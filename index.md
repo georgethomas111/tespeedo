@@ -23,4 +23,3 @@ features:
   - title: MobileNet
     details: MobileNet is a model that can look into an image and let us know what is in the image. Using Image at Tespeedo, we can try to understand what is in an image. 
 ---
-
