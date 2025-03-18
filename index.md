@@ -13,6 +13,9 @@ hero:
     - theme: brand
       text: ImageApp
       link: /image
+    - theme: brand
+      text: AIChat
+      link: /ai-chat
     - theme: alt
       text: About
       link: /about

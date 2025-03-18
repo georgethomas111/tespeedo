@@ -76,4 +76,3 @@ input[type="file"] {
   color: red;
 }
 </style>
-
